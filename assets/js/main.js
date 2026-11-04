@@ -2,7 +2,7 @@
 (function () {
   var root = document.documentElement;
 
-  // Logo intro: CSS plays and hides it on its own; this only adds skip + cleanup.
+  // Logo intro: CSS plays and hides it on its own; this only cleans up afterwards.
   var intro = document.getElementById('intro');
   if (intro && root.classList.contains('intro-on')) {
     var finished = false;
@@ -11,19 +11,11 @@
       finished = true;
       root.classList.remove('intro-on');
       intro.remove();
-      document.removeEventListener('keydown', skip);
-    }
-    function skip() {
-      if (finished) return;
-      intro.classList.add('is-leaving');
-      setTimeout(finish, 460);
     }
     intro.addEventListener('animationend', function (e) {
       if (e.target === intro) finish();
     });
-    intro.addEventListener('click', skip);
-    document.addEventListener('keydown', skip);
-    setTimeout(finish, 3600); // safety net
+    setTimeout(finish, 3700); // safety net
   } else if (intro) {
     intro.remove();
   }
