@@ -1,5 +1,34 @@
-// Aksal Motors: mobile menu and small helpers
+// Aksal Motors: logo intro, mobile menu, call bar and small helpers
 (function () {
+  var root = document.documentElement;
+
+  // Logo intro: CSS plays and hides it on its own; this only adds skip + cleanup.
+  var intro = document.getElementById('intro');
+  if (intro && root.classList.contains('intro-on')) {
+    var finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      root.classList.remove('intro-on');
+      intro.remove();
+      document.removeEventListener('keydown', skip);
+    }
+    function skip() {
+      if (finished) return;
+      intro.classList.add('is-leaving');
+      setTimeout(finish, 460);
+    }
+    intro.addEventListener('animationend', function (e) {
+      if (e.target === intro) finish();
+    });
+    intro.addEventListener('click', skip);
+    document.addEventListener('keydown', skip);
+    setTimeout(finish, 3600); // safety net
+  } else if (intro) {
+    intro.remove();
+  }
+
+  // Mobile menu
   var btn = document.querySelector('.menu-btn');
   var nav = document.getElementById('site-nav');
   if (btn && nav) {
@@ -21,14 +50,25 @@
     });
   }
 
-  // Mobile call bar: appears once the hero's own call button has scrolled away
+  // Mobile call bar: shows after the hero's call button scrolls away,
+  // and hides again once the red footer (with its own call button) is on screen.
   var bar = document.querySelector('.call-bar');
   var heroCall = document.querySelector('.hero-ctas .btn-red');
-  if (bar && heroCall && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      var e = entries[0];
-      bar.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0);
-    }).observe(heroCall);
+  var footer = document.querySelector('.footer');
+  if (bar && heroCall && footer) {
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var pastHero = heroCall.getBoundingClientRect().bottom < 0;
+      var footerOn = footer.getBoundingClientRect().top < window.innerHeight - 40;
+      bar.classList.toggle('show', pastHero && !footerOn);
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   } else if (bar) {
     bar.classList.add('show');
   }

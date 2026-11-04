@@ -6,16 +6,20 @@
 <title>Aksal Motors | Mechanic, Servicing &amp; WoF in Newlands, Wellington</title>
 <meta name="description" content="Affordable car servicing, repairs and Warrant of Fitness inspections for foreign and domestic vehicles at 101 Newlands Road, Wellington. Call (04) 389 6250.">
 <meta name="theme-color" content="#101820">
-<script>document.documentElement.classList.add('js')</script>
+<script>
+(function(d){d.classList.add('js');try{var m=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(!m&&!sessionStorage.getItem('amIntro')){d.classList.add('intro-on');sessionStorage.setItem('amIntro','1')}}catch(e){}})(document.documentElement);
+</script>
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Aksal Motors, Newlands">
 <meta property="og:description" content="Servicing, repairs and WoF inspections in Newlands, Wellington. Call (04) 389 6250.">
 <meta property="og:image" content="assets/img/newlands.webp">
 <meta property="og:type" content="website">
+<link rel="preload" href="assets/img/logo-car.webp" as="image">
+<link rel="preload" href="assets/img/logo-name.webp" as="image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&amp;family=Roboto:wght@400;500&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=2">
+<link rel="stylesheet" href="assets/css/styles.css?v=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,6 +48,14 @@
 </script>
 </head>
 <body>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-stage">
+    <span class="intro-lines"><i></i><i></i><i></i></span>
+    <img class="intro-car" src="assets/img/logo-car.webp" alt="" width="1024" height="205">
+    <img class="intro-name" src="assets/img/logo-name.webp" alt="" width="1024" height="205">
+  </div>
+  <span class="intro-hint">Tap to skip</span>
+</div>
 <!-- Icon set: original line icons drawn for Aksal Motors -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -134,20 +146,20 @@
           <strong>4.7</strong>
           <span><span class="stars" aria-hidden="true">★★★★★</span><small>Google rating, Newlands</small></span>
         </div>
-        <div class="float-card float-wof">
-          <span class="tile tile-sm"><svg class="icon" aria-hidden="true"><use href="#i-wof"/></svg></span>
-          <span><strong>WoF inspections</strong><small>Cars and trailers</small></span>
-        </div>
       </div>
     </div>
   </section>
 
-  <section class="makes" aria-label="Car makes we work on">
-    <div class="wrap">
-      <div class="makes-label"><span>We work on</span><span class="hand">all makes &amp; models</span></div>
-      <ul>
-        <li>Toyota</li><li>Mazda</li><li>Nissan</li><li>Honda</li><li>Subaru</li><li>Mitsubishi</li><li>Suzuki</li><li>Hyundai</li><li>Kia</li><li>Ford</li><li>Holden</li><li>Volkswagen</li>
-      </ul>
+  <section class="makes" aria-labelledby="makes-title">
+    <div class="wrap makes-head">
+      <p id="makes-title" class="makes-label"><span>We work on</span><span class="hand">all makes &amp; models</span></p>
+      <p class="makes-note">Japanese, Korean, European, American, Australian and Chinese. If it drives, we can look at it.</p>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track"><ul><li>Toyota</li><li>Mazda</li><li>Nissan</li><li>Honda</li><li>Subaru</li><li>Mitsubishi</li><li>Suzuki</li><li>Isuzu</li><li>Daihatsu</li><li>Lexus</li><li>Infiniti</li><li>Acura</li><li>Hyundai</li><li>Kia</li><li>Genesis</li><li>SsangYong</li><li>KGM</li><li>Holden</li><li>HSV</li><li>Ford</li><li>Chevrolet</li><li>Jeep</li><li>Dodge</li><li>Chrysler</li><li>RAM</li><li>Cadillac</li><li>Tesla</li><li>Proton</li></ul><ul aria-hidden="true"><li>Toyota</li><li>Mazda</li><li>Nissan</li><li>Honda</li><li>Subaru</li><li>Mitsubishi</li><li>Suzuki</li><li>Isuzu</li><li>Daihatsu</li><li>Lexus</li><li>Infiniti</li><li>Acura</li><li>Hyundai</li><li>Kia</li><li>Genesis</li><li>SsangYong</li><li>KGM</li><li>Holden</li><li>HSV</li><li>Ford</li><li>Chevrolet</li><li>Jeep</li><li>Dodge</li><li>Chrysler</li><li>RAM</li><li>Cadillac</li><li>Tesla</li><li>Proton</li></ul></div>
+    </div>
+    <div class="marquee marquee-reverse">
+      <div class="marquee-track"><ul><li>Volkswagen</li><li>Audi</li><li>BMW</li><li>Mercedes‑Benz</li><li>Mini</li><li>Volvo</li><li>Peugeot</li><li>Renault</li><li>Citroën</li><li>Škoda</li><li>SEAT</li><li>Cupra</li><li>Opel</li><li>Fiat</li><li>Alfa Romeo</li><li>Jaguar</li><li>Land Rover</li><li>Porsche</li><li>Smart</li><li>Polestar</li><li>MG</li><li>LDV</li><li>GWM</li><li>Haval</li><li>BYD</li><li>Chery</li><li>Omoda</li><li>Geely</li><li>Mahindra</li><li>Tata</li><li>Foton</li></ul><ul aria-hidden="true"><li>Volkswagen</li><li>Audi</li><li>BMW</li><li>Mercedes‑Benz</li><li>Mini</li><li>Volvo</li><li>Peugeot</li><li>Renault</li><li>Citroën</li><li>Škoda</li><li>SEAT</li><li>Cupra</li><li>Opel</li><li>Fiat</li><li>Alfa Romeo</li><li>Jaguar</li><li>Land Rover</li><li>Porsche</li><li>Smart</li><li>Polestar</li><li>MG</li><li>LDV</li><li>GWM</li><li>Haval</li><li>BYD</li><li>Chery</li><li>Omoda</li><li>Geely</li><li>Mahindra</li><li>Tata</li><li>Foton</li></ul></div>
     </div>
   </section>
 
@@ -206,7 +218,6 @@
           <span class="kicker kicker-red">Service levels</span>
           <h2>Three levels of care. One quick call.</h2>
         </div>
-        <p>Every car is different, so we quote for yours. Call with your make and model and we’ll recommend the right service.</p>
       </div>
       <div class="levels-grid">
         <article class="level">
@@ -257,11 +268,6 @@
         <div>
           <span class="kicker kicker-red">Don’t just take our word for it…</span>
           <h2>Here’s what our customers say on Google.</h2>
-        </div>
-        <div class="g-summary">
-          <span class="score">4.7</span>
-          <span class="meta"><span class="g-stars" aria-label="4.7 out of 5 stars">★★★★★</span><small>63 reviews · Aksal Motors Newlands</small></span>
-          <a class="g-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Aksal+Motors+Newlands">See all reviews</a>
         </div>
       </div>
       <div class="g-grid">
@@ -365,6 +371,6 @@
 
 <a class="call-bar" href="tel:+6443896250"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>Call (04) 389 6250</a>
 
-<script src="assets/js/main.js?v=2" defer></script>
+<script src="assets/js/main.js?v=3" defer></script>
 </body>
 </html>
