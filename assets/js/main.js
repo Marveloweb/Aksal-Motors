@@ -15,7 +15,7 @@
     intro.addEventListener('animationend', function (e) {
       if (e.target === intro) finish();
     });
-    setTimeout(finish, 3700); // safety net
+    setTimeout(finish, 3400); // safety net
   } else if (intro) {
     intro.remove();
   }

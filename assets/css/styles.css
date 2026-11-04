@@ -342,32 +342,54 @@ section[id] { scroll-margin-top: 84px; }
 }
 
 /* ---------- Logo intro (plays once per visit) ---------- */
-/* The whole logo, car and name together, drifts in from the right and settles. */
+/* The car drives in level from the right along its underline, drifts to a stop with a
+   suspension bounce, and "AKSAL MOTORS" and the web address come in with it.
+   Pieces are placed in the logo's own 1024 x 205 space, as percentages. */
 .intro { display: none; }
 .intro-on body { overflow: hidden; }
 .intro-on .intro {
   display: flex; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center;
   background: #fff; overflow: hidden;
-  animation: introOut .6s cubic-bezier(.7, 0, .3, 1) 2.6s forwards;
+  animation: introOut .6s cubic-bezier(.7, 0, .3, 1) 2.3s forwards;
 }
-.intro-stage { position: relative; width: min(720px, 84vw); aspect-ratio: 1024 / 205; transform-origin: 30% 85%; animation: driftIn 1.5s cubic-bezier(.2, .75, .25, 1) .15s both; }
-.intro-car, .intro-name { position: absolute; inset: 0; width: 100%; height: 100%; }
-.intro-lines { position: absolute; left: 92%; top: 14%; width: 70%; height: 70%; pointer-events: none; }
-.intro-lines i { position: absolute; right: 0; height: 4px; border-radius: 4px; background: linear-gradient(270deg, rgba(204,0,0,0), var(--red)); transform-origin: left center; animation: lineTrail 1.2s ease-out .25s both; }
-.intro-lines i:nth-child(1) { top: 10%; width: 60%; }
-.intro-lines i:nth-child(2) { top: 50%; width: 100%; height: 5px; animation-delay: .3s; }
-.intro-lines i:nth-child(3) { top: 88%; width: 75%; animation-delay: .35s; }
-@keyframes driftIn {
-  0%   { transform: translateX(115vw) rotate(-7deg) skewX(12deg); filter: blur(5px); }
-  45%  { transform: translateX(-6%) rotate(4deg) skewX(-6deg); filter: blur(0); }
-  65%  { transform: translateX(2.5%) rotate(-2.2deg) skewX(2deg); }
-  82%  { transform: translateX(-1%) rotate(1deg) skewX(0); }
-  100% { transform: none; filter: none; }
+.intro-stage { --S: min(720px, 84vw); position: relative; width: var(--S); aspect-ratio: 1024 / 205; }
+.intro-stage > img { position: absolute; display: block; max-width: none; }
+.intro-car   { left: .78%;   top: 2.93%;  width: 42.09%; height: 84.88%; z-index: 3; translate: 100vw 0; }
+.intro-line  { left: 23.05%; top: 72.68%; width: 69.34%; height: 7.32%;  clip-path: inset(0 0 0 100%); }
+.intro-title { left: 18.55%; top: 34.15%; width: 80.57%; height: 34.15%; clip-path: inset(0 0 0 100%); }
+.intro-url   { left: 18.55%; top: 76.59%; width: 80.57%; height: 20.98%; clip-path: inset(0 0 0 100%); }
+.intro-skids { position: absolute; inset: 0; width: 100%; height: 100%; }
+.intro-skids path { fill: none; stroke: rgba(16, 24, 32, .16); stroke-width: 4; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.intro-smoke { position: absolute; left: var(--x); top: var(--y); width: 7%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(120, 128, 136, .22), rgba(120, 128, 136, 0) 68%); opacity: 0; z-index: 4; }
+
+.intro-on .intro-car   { animation: introCar 1.6s forwards; }
+.intro-on .intro-line  { animation: introLine 1.6s forwards; }
+.intro-on .intro-title,
+.intro-on .intro-url   { animation: introText 1.6s forwards; }
+.intro-on .intro-skids path { animation: skidDraw .4s cubic-bezier(.2, .6, .3, 1) .55s forwards, skidFade .8s ease 1.7s forwards; }
+.intro-on .intro-smoke { animation: introSmoke .9s ease-out var(--t) forwards; }
+
+@keyframes introCar {
+  0%   { translate: 100vw 0; animation-timing-function: cubic-bezier(.3, .55, .45, 1); }
+  44%  { translate: 0 0; animation-timing-function: ease-out; }
+  54%  { translate: -5% 3px; animation-timing-function: ease-in-out; }
+  66%  { translate: 2% -2px; animation-timing-function: ease-in-out; }
+  78%  { translate: -.7% 1.2px; }
+  90%  { translate: 0 -.4px; }
+  100% { translate: 0 0; }
 }
-@keyframes lineTrail {
-  0%   { opacity: 0; transform: scaleX(.3); }
-  30%  { opacity: 1; transform: scaleX(1); }
-  100% { opacity: 0; transform: translateX(40%) scaleX(.6); }
+/* the line is drawn exactly behind the car's tail */
+@keyframes introLine {
+  0%   { clip-path: inset(0 0 0 100vw); animation-timing-function: cubic-bezier(.3, .55, .45, 1); }
+  44%, 100% { clip-path: inset(0 0 0 0); }
 }
+/* the name is uncovered just behind the car's nose, so it arrives with the car */
+@keyframes introText {
+  0%   { clip-path: inset(0 0 0 calc(100vw - var(--S) * .178)); animation-timing-function: cubic-bezier(.3, .55, .45, 1); }
+  44%, 100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes skidDraw { to { stroke-dashoffset: 0; } }
+@keyframes skidFade { to { opacity: 0; } }
+@keyframes introSmoke { 0% { opacity: 0; scale: .4; } 20% { opacity: 1; } 100% { opacity: 0; scale: 2; translate: -20% -80%; } }
 @keyframes introOut { to { transform: translateY(-100%); visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .intro-on .intro { display: none; } .intro-on body { overflow: auto; } }
