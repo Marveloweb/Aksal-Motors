@@ -13,6 +13,7 @@ When CSS or JS changes, bump its `?v=` number in `index.html`.
 
 ## Deploy
 GitHub Pages from the `main` branch root (Settings → Pages). `.nojekyll` is included.
+Live: https://marveloweb.github.io/Aksal-Motors/
 
 ## Before launch
 - Confirm with the client: which car makes to list, using "Dan" in the sign-off, and the star ratings on the five reviews.
