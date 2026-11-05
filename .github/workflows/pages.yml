@@ -1,10 +1,25 @@
-# Deploys the static site in the repo root to GitHub Pages on every push to main.
+# Deploys the client preview to GitHub Pages.
+#
+# The preview link is time-limited. Until PREVIEW_EXPIRES the site is published
+# (marked noindex, with a script that also sends visitors away at the exact
+# expiry time). After PREVIEW_EXPIRES the published site is replaced by a
+# redirect-only page, so the design files are no longer served and every
+# address on the preview sends visitors to REDIRECT_TO.
+# The source code on main is never changed by this workflow.
+#
+# To extend or reopen the preview: change PREVIEW_EXPIRES and push.
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"   # hourly; only acts in the hours right after expiry
+
+env:
+  PREVIEW_EXPIRES: "2026-11-08T10:59:00Z"   # 11:59 pm Sun 8 Nov 2026, NZ time
+  REDIRECT_TO: "https://marveloweb.com/"
 
 permissions:
   contents: read
@@ -23,9 +38,47 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Decide what to publish
+        id: mode
+        run: |
+          now=$(date -u +%s)
+          exp=$(date -u -d "$PREVIEW_EXPIRES" +%s)
+          if [ "$now" -lt "$exp" ]; then mode=preview; else mode=expired; fi
+          # Scheduled runs only need to act once, in the few hours after expiry.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "$mode" = "preview" ] || [ "$now" -gt $((exp + 4*3600)) ]; then mode=skip; fi
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "Now $(date -u), expiry $PREVIEW_EXPIRES, publishing: $mode"
+
+      - name: Build the time-limited preview
+        if: steps.mode.outputs.mode == 'preview'
+        run: |
+          mkdir _site
+          cp -r index.html assets .nojekyll _site/
+          exp_ms=$(( $(date -u -d "$PREVIEW_EXPIRES" +%s) * 1000 ))
+          guard="<meta name=\"robots\" content=\"noindex, nofollow\"><script>if(Date.now()>${exp_ms})location.replace('${REDIRECT_TO}')</script>"
+          sed -i "s|<meta charset=\"utf-8\">|<meta charset=\"utf-8\">${guard}|" _site/index.html
+          grep -q 'noindex' _site/index.html
+          printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
+
+      - name: Build the redirect-only page
+        if: steps.mode.outputs.mode == 'expired'
+        run: |
+          mkdir _site
+          page="<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"robots\" content=\"noindex, nofollow\"><meta http-equiv=\"refresh\" content=\"0; url=${REDIRECT_TO}\"><title>MarveloWeb</title><script>location.replace('${REDIRECT_TO}')</script></head><body><p>This preview has ended. Continue to <a href=\"${REDIRECT_TO}\">MarveloWeb</a>.</p></body></html>"
+          echo "$page" > _site/index.html
+          echo "$page" > _site/404.html
+          printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
+          touch _site/.nojekyll
+
       - uses: actions/configure-pages@v5
+        if: steps.mode.outputs.mode != 'skip'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.mode.outputs.mode != 'skip'
         with:
-          path: .
+          path: _site
       - id: deployment
+        if: steps.mode.outputs.mode != 'skip'
         uses: actions/deploy-pages@v4
