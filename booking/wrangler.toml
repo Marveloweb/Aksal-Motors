@@ -1,0 +1,16 @@
+name = "aksal-booking"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aksal-bookings"
+database_id = "19ae2d26-7888-4a6d-a523-c26b45121c28"
+
+[vars]
+# Websites allowed to use the booking API (add the live domain at launch)
+ALLOWED_ORIGINS = "https://marveloweb.github.io,https://aksalmotors.co.nz,https://www.aksalmotors.co.nz"
+
+# Secrets (set from this folder with `npx wrangler secret put NAME`):
+#   NOTIFY_URL     the Google Apps Script web app URL (sends emails, adds to calendar)
+#   NOTIFY_SECRET  any long random text; must match SHARED_SECRET in the Google script

@@ -56,11 +56,13 @@ jobs:
         if: steps.mode.outputs.mode == 'preview'
         run: |
           mkdir _site
-          cp -r index.html assets .nojekyll _site/
+          cp -r index.html book.html assets .nojekyll _site/
           exp_ms=$(( $(date -u -d "$PREVIEW_EXPIRES" +%s) * 1000 ))
           guard="<meta name=\"robots\" content=\"noindex, nofollow\"><script>if(Date.now()>${exp_ms})location.replace('${REDIRECT_TO}')</script>"
-          sed -i "s|<meta charset=\"utf-8\">|<meta charset=\"utf-8\">${guard}|" _site/index.html
-          grep -q 'noindex' _site/index.html
+          for f in _site/index.html _site/book.html; do
+            sed -i "s|<meta charset=\"utf-8\">|<meta charset=\"utf-8\">${guard}|" "$f"
+            grep -q 'noindex' "$f"
+          done
           printf 'User-agent: *\nDisallow: /\n' > _site/robots.txt
 
       - name: Build the redirect-only page
